@@ -8,7 +8,8 @@ app.use(express.urlencoded({
 }))
 
 app.get("/", function(req, res){
-  res.send("teste")
+  var aparece = await usuario.findAll();
+  res.json(aparece)
 });
 app.post("/", function(req, res){
   var resultado = usuario.create(req.body);
@@ -16,5 +17,5 @@ app.post("/", function(req, res){
 });
 
 app.listen(3000, function(){
-  console.log("UoU")
+  console.log("Tudo ")
 })
