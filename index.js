@@ -1,4 +1,4 @@
-var express = require("express");
+var express = require("express"); 
 var app = express();
 var { usuario } = require("./models");
 var { empresa } = require("./models");
@@ -25,6 +25,13 @@ app.delete("/usuarios/:id", function(req, res){
   var deletando = usuario.destroy({where: {id: req.params.id} });
   res.json(deletando);
 });
+/* Mostrar a qual empresa os usuários pertencem */
+app.get("/usuarios/:id/empresa", async function(req, res){
+  let resultado = await usuario.findByPk(req.params.id, {
+    include: 'empresa'
+  });
+  res.json(resultado.empresa);
+});
 
 /* Empresas */
 app.get("/empresas", async function(req, res){
@@ -42,6 +49,13 @@ app.put("/empresas/:id", function(req, res){
 app.delete("/empresas/:id", function(req, res){
   var deletando = empresa.destroy({where: {id: req.params.id} });
   res.json(deletando);
+});
+/* Mostrar a qual usuário a empresa pertence */
+app.get("/empresas/:id/usuarios", async function(req, res){
+  let resultados = await empresa.findByPk(req.params.id, {
+    include: 'usuarios'
+  });
+  res.json(resultados.usuarios);
 });
 
 app.listen(3000, function(){
